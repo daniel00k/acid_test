@@ -1,0 +1,58 @@
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+if (navigator.geolocation){ 
+	navigator.geolocation.getCurrentPosition( 
+
+		function (position) {
+                    $.get("/", { ubicacion:position.coords.latitude+","+position.coords.longitude} );
+                    $("tr:first td:last").append(position.coords.latitude+","+position.coords.longitude);
+		}, 
+		// next function is the error callback
+		function (error)
+		{
+
+			switch(error.code) 
+			{
+				case error.TIMEOUT:
+					alert ('Timeout');
+					break;
+				case error.POSITION_UNAVAILABLE:
+					alert ('Position unavailable');
+					break;
+				case error.PERMISSION_DENIED:
+					alert ('Permission denied');
+					break;
+				case error.UNKNOWN_ERROR:
+					alert ('Unknown error');
+					break;
+			}
+		}
+		);
+	}
+</script>
+
+<h1>Los ultimos 5 request incluyendo el suyo son:</h1>
+
+<table border=1>
+
+   <%for user in @users.reverse%>
+	<td><%=user.id%></td>
+	<td><%=user.ip%></td>
+	<td><%=user.navegador%></td>
+	<td><%=user.server%></td>
+	<td><%=user.rqmet%></td>
+	<td><%=user.fecha%></td>
+	<td><%=user.ubicacion%></td>
+   </tr>
+  <%end%> 
+  <tr>
+    <th>ID</th>
+    <th>IP</th>
+    <th>Info Navegador</th>
+    <th>Info Server</th>
+    <th>Request Method</th>
+    <th>Realizada en</th>
+    <th>Coordenadas</th>
+
+  <tr>
+</table>
